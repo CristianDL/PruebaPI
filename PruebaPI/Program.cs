@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PIWebAPI;
+using System.Configuration;
 
 namespace PruebaPI
 {
@@ -10,6 +8,13 @@ namespace PruebaPI
     {
         static void Main(string[] args)
         {
+            using (PIWebAPIClient client = new PIWebAPIClient(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"]))
+            {
+                //aqui va el código
+            }
+
+            Console.WriteLine("Presione una tecla para salir...");
+            Console.ReadKey();
         }
     }
 }
