@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CalculosEnPot
 {
-    public class OperacionesEnergia
+    public class OperacionesBasicas
     {
         public static double InterpolacionLineal(double potInf, double potSup, DateTime fechaInicio, DateTime fechaFin, DateTime fechaInter)
         {
