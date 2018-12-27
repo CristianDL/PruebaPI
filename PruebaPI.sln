@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebaPI", "PruebaPI\Prueba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PIWebAPI", "PIWebAPI\PIWebAPI.csproj", "{BB1974C6-2DF3-4A69-8BFB-1FA2C9A3B35A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculosEnPot", "CalculosEnPot\CalculosEnPot.csproj", "{49359AF0-C8ED-45D0-8875-483BF872E02C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POCOs", "POCOs\POCOs.csproj", "{7AEAE146-E086-4531-9034-8BE89A0D7A05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{BB1974C6-2DF3-4A69-8BFB-1FA2C9A3B35A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB1974C6-2DF3-4A69-8BFB-1FA2C9A3B35A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB1974C6-2DF3-4A69-8BFB-1FA2C9A3B35A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49359AF0-C8ED-45D0-8875-483BF872E02C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49359AF0-C8ED-45D0-8875-483BF872E02C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49359AF0-C8ED-45D0-8875-483BF872E02C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49359AF0-C8ED-45D0-8875-483BF872E02C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AEAE146-E086-4531-9034-8BE89A0D7A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AEAE146-E086-4531-9034-8BE89A0D7A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AEAE146-E086-4531-9034-8BE89A0D7A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AEAE146-E086-4531-9034-8BE89A0D7A05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
