@@ -35,7 +35,7 @@ namespace PIWebAPI
 
         public static List<ActivoElectrico> GetRecordedDataAdHoc(List<ActivoElectrico> activos, DateTime startTime, DateTime endTime)
         {
-            JToken items = null;
+            JArray items = null;
             StringBuilder url = new StringBuilder();
 
             url.Append(ConfigurationManager.AppSettings["baseUrl"]);
@@ -60,7 +60,28 @@ namespace PIWebAPI
             {
                 Task<JObject> t = client.GetAsync(url.ToString());
                 t.Wait();
-                items = t.Result[Constants.ItemsField];
+                items = (JArray) t.Result[Constants.ItemsField];
+            }
+
+            foreach (ActivoElectrico activo in activos)
+            {
+                JObject serieDatos = (JObject)items.Select(p => p[Constants.NameField].ToString().Equals(activo.Tag));
+                JArray datos = (JArray) serieDatos[Constants.ItemsField];
+                if (activo.SeriesDatos == null)
+                {
+                    activo.SeriesDatos = new List<SerieDatos>();
+                }
+                SerieDatos serie = new SerieDatos();
+                serie.NombreSerie = "Potencia activa tiempo real";
+                serie.Datos = new Dictionary<DateTime, decimal>();
+                foreach (var dato in datos)
+                {
+                    if (bool.Parse(dato[Constants.GoodField].ToString()))
+                    {
+                        serie.Datos.Add((DateTime)dato[Constants.TimestampField], (decimal)dato[Constants.ValueField]);
+                    }
+                }
+                activo.SeriesDatos.Add(serie);
             }
 
             return activos;

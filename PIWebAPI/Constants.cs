@@ -13,6 +13,10 @@
 
         public const string WebIdField = "WebId";
         public const string ItemsField = "Items";
+        public const string NameField = "Name";
+        public const string TimestampField = "Timestamp";
+        public const string ValueField = "Value";
+        public const string GoodField = "Good";
 
         public const string RecordedDataLink = "recorded";
 
