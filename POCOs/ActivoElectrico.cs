@@ -10,6 +10,7 @@ namespace POCOs
     {
         public string CodigoMID { get; set; }
         public string Tag { get; set; }
+        public string WebId { get; set; }
         public List<SerieDatos> SeriesDatos { get; set; }
     }
 }

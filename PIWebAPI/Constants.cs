@@ -12,9 +12,11 @@
         public const string EndTimeParameter = "endTime=";
 
         public const string WebIdField = "WebId";
+        public const string ItemsField = "Items";
 
         public const string RecordedDataLink = "recorded";
 
+        public const string Slash = "/";
         public const string QueryStringStart = "?";
         public const string QueryStringParameterDelimiter = "&";
     }
