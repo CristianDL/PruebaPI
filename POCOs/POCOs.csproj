@@ -44,6 +44,7 @@
     <Compile Include="ActivoElectrico.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerieDatos.cs" />
+    <Compile Include="Variables.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

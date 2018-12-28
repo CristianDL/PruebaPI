@@ -72,13 +72,13 @@ namespace PIWebAPI
                     activo.SeriesDatos = new List<SerieDatos>();
                 }
                 SerieDatos serie = new SerieDatos();
-                serie.NombreSerie = "Potencia activa tiempo real";
-                serie.Datos = new Dictionary<DateTime, decimal>();
+                serie.NombreSerie = Variables.P.ToString();
+                serie.Datos = new Dictionary<DateTime, double>();
                 foreach (var dato in datos)
                 {
                     if (bool.Parse(dato[Constants.GoodField].ToString()))
                     {
-                        serie.Datos.Add((DateTime)dato[Constants.TimestampField], (decimal)dato[Constants.ValueField]);
+                        serie.Datos.Add((DateTime)dato[Constants.TimestampField], (double)dato[Constants.ValueField]);
                     }
                 }
                 activo.SeriesDatos.Add(serie);

@@ -62,9 +62,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CalculosEnPot\CalculosEnPot.csproj">
+      <Project>{49359af0-c8ed-45d0-8875-483bf872e02c}</Project>
+      <Name>CalculosEnPot</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PIWebAPI\PIWebAPI.csproj">
       <Project>{bb1974c6-2df3-4a69-8bfb-1fa2c9a3b35a}</Project>
       <Name>PIWebAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\POCOs\POCOs.csproj">
+      <Project>{7aeae146-e086-4531-9034-8be89a0d7a05}</Project>
+      <Name>POCOs</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

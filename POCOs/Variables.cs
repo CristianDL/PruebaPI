@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace POCOs
 {
-    public class SerieDatos
+    public enum Variables
     {
-        public string NombreSerie { get; set; }
-        public Dictionary<DateTime, double> Datos { get; set; }
+        P,
+        Pmax,
+        E
     }
 }
