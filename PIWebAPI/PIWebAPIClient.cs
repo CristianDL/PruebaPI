@@ -14,6 +14,11 @@ namespace PIWebAPI
         private HttpClient client;
         private bool disposed = false;
 
+        public PIWebAPIClient()
+        {
+            client = new HttpClient(new HttpClientHandler() { UseDefaultCredentials = true });
+        }
+
         public PIWebAPIClient(string username, string password)
         {
             client = new HttpClient();

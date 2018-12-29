@@ -23,7 +23,8 @@ namespace PIWebAPI
             url.Append(ConfigurationManager.AppSettings["baseTagPath"]);
             url.Append(tag);
 
-            using (PIWebAPIClient client = new PIWebAPIClient(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"]))
+            //using (PIWebAPIClient client = new PIWebAPIClient(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"]))
+            using (PIWebAPIClient client = new PIWebAPIClient())
             {
                 Task<JObject> t = client.GetAsync(url.ToString());
                 t.Wait();
@@ -56,7 +57,8 @@ namespace PIWebAPI
             url.Append(Constants.EndTimeParameter);
             url.Append(endTime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK"));
 
-            using (PIWebAPIClient client = new PIWebAPIClient(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"]))
+            //using (PIWebAPIClient client = new PIWebAPIClient(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"]))
+            using (PIWebAPIClient client = new PIWebAPIClient())
             {
                 Task<JObject> t = client.GetAsync(url.ToString());
                 t.Wait();
