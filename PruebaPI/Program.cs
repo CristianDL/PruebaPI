@@ -45,6 +45,7 @@ namespace PruebaPI
                 Console.WriteLine("Consultando datos de PI...");
 
                 activos = PIRequests.GetRecordedDataAdHoc(activos, fechaInicio.AddHours(-1), fechaFin.AddHours(1));
+                activos = activos.Where(a => a.SeriesDatos.Count > 0 && a.SeriesDatos[0].Datos.Count > 0).ToList();
 
                 Console.WriteLine("Calculando energía y potencia máxima...");
 
