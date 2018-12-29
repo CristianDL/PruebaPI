@@ -87,7 +87,16 @@ namespace PruebaPI
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error: " + e.Message + ". " + e.StackTrace);
+                StringBuilder error = new StringBuilder();
+                error.Append("Error: ").Append(e.Message).Append(e.StackTrace);
+                var ex = e.InnerException;
+                while (ex != null)
+                {
+                    error.Append(ex.Message).Append(ex.StackTrace);
+                    ex = ex.InnerException;
+                }
+                Console.WriteLine(error.ToString());
+
             }
             finally
             {
