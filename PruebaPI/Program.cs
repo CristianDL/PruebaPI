@@ -34,7 +34,14 @@ namespace PruebaPI
                 {
                     ConsultasBDMID consulta = new ConsultasBDMID();
                     activo.Tag = consulta.ObtenerTagMapeo(activo.CodigoMID);
-                    activo.WebId = PIRequests.GetAttributeWebId(activo.Tag);
+                    if (!string.IsNullOrEmpty(activo.Tag))
+                    {
+                        activo.WebId = PIRequests.GetAttributeWebId(activo.Tag);
+                    }
+                    else
+                    {
+                        activos.Remove(activo);
+                    }
                 }
 
                 Console.WriteLine("Consultando datos de PI...");
