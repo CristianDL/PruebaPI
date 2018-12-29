@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
+using System.Net;
+using System.Configuration;
 
 namespace PIWebAPI
 {
@@ -16,7 +16,16 @@ namespace PIWebAPI
 
         public PIWebAPIClient()
         {
-            client = new HttpClient(new HttpClientHandler() { UseDefaultCredentials = true });
+            var credentialCache = new CredentialCache();
+            credentialCache.Add(
+                new Uri(ConfigurationManager.AppSettings["baseUrl"]),
+                "Negotiate",
+                new NetworkCredential(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"], ConfigurationManager.AppSettings["domain"])
+            );
+
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.Credentials = credentialCache;
+            client = new HttpClient(handler);
         }
 
         public PIWebAPIClient(string username, string password)
