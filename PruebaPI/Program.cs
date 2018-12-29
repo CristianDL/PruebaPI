@@ -38,11 +38,9 @@ namespace PruebaPI
                     {
                         activo.WebId = PIRequests.GetAttributeWebId(activo.Tag);
                     }
-                    else
-                    {
-                        activos.Remove(activo);
-                    }
                 }
+
+                activos = activos.Where(a => a.WebId != null).ToList();
 
                 Console.WriteLine("Consultando datos de PI...");
 
