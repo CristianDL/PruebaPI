@@ -52,10 +52,10 @@ namespace PIWebAPI
                 url.Append(Constants.QueryStringParameterDelimiter);
             }
             url.Append(Constants.StartTimeParameter);
-            url.Append(startTime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK"));
+            url.Append(startTime.ToString("u"));
             url.Append(Constants.QueryStringParameterDelimiter);
             url.Append(Constants.EndTimeParameter);
-            url.Append(endTime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK"));
+            url.Append(endTime.ToString("u"));
 
             //using (PIWebAPIClient client = new PIWebAPIClient(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"]))
             using (PIWebAPIClient client = new PIWebAPIClient(url.ToString()))
@@ -67,7 +67,7 @@ namespace PIWebAPI
 
             foreach (ActivoElectrico activo in activos)
             {
-                JObject serieDatos = (JObject)items.Select(p => p[Constants.NameField].ToString().Equals(activo.Tag));
+                JObject serieDatos = (JObject)items.Where(p => p[Constants.NameField].ToString().Equals(activo.Tag)).First();
                 JArray datos = (JArray) serieDatos[Constants.ItemsField];
                 if (activo.SeriesDatos == null)
                 {
@@ -80,7 +80,7 @@ namespace PIWebAPI
                 };
                 foreach (var dato in datos)
                 {
-                    if (bool.Parse(dato[Constants.GoodField].ToString()))
+                    if (bool.Parse(dato[Constants.GoodField].ToString()) && !serie.Datos.ContainsKey((DateTime)dato[Constants.TimestampField]))
                     {
                         serie.Datos.Add((DateTime)dato[Constants.TimestampField], (double)dato[Constants.ValueField]);
                     }

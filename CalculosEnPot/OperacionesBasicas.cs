@@ -9,8 +9,8 @@ namespace CalculosEnPot
         public static KeyValuePair<DateTime, double> InterpolacionLineal(Dictionary<DateTime, double> serie, DateTime fechaInter)
         {
             List<DateTime> fechas = serie.Keys.ToList();
-            DateTime fechaInicio = fechas.Where(x => x < fechaInter).OrderByDescending(x => x).ElementAt(0);
-            DateTime fechaFin = fechas.Where(x => x > fechaInter).OrderBy(x => x).ElementAt(0);
+            DateTime fechaInicio = fechas.Where(x => x < fechaInter).OrderByDescending(x => x).First();
+            DateTime fechaFin = fechas.Where(x => x > fechaInter).OrderBy(x => x).First();
             double datoInicio = serie[fechaInicio];
             double datoFin = serie[fechaFin];
             TimeSpan hastaInter = new TimeSpan(fechaInter.Ticks - fechaInicio.Ticks);
@@ -25,10 +25,10 @@ namespace CalculosEnPot
             fechas.Sort();
             double integral = 0;
     
-            for (int i = 0; i < serieDatos.Keys.Count - 1; i++)
+            for (int i = 0; i < fechas.Count - 1; i++)
             {
                 TimeSpan intervalo = new TimeSpan(fechas.ElementAt(i + 1).Ticks - fechas.ElementAt(i).Ticks);
-                integral += (serieDatos[fechas.ElementAt(i + 1)] + serieDatos[fechas.ElementAt(i)]) * (intervalo.TotalSeconds) / 2;
+                integral += (serieDatos[fechas.ElementAt(i + 1)] + serieDatos[fechas.ElementAt(i)]) * (intervalo.TotalHours) / 2;
             }
 
             return integral;
