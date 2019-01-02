@@ -14,18 +14,25 @@ namespace PIWebAPI
         private HttpClient client;
         private bool disposed = false;
 
-        public PIWebAPIClient()
+        public PIWebAPIClient(string url)
         {
-            var credentialCache = new CredentialCache();
-            credentialCache.Add(
-                new Uri(ConfigurationManager.AppSettings["baseUrl"]),
-                "Negotiate",
-                new NetworkCredential(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"], ConfigurationManager.AppSettings["domain"])
-            );
+            CredentialCache credentialCache = new CredentialCache
+            {
+                {
+                    new Uri(url),
+                    "Negotiate",
+                    new NetworkCredential(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"], ConfigurationManager.AppSettings["domain"])
+                }
+            };
 
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.Credentials = credentialCache;
-            client = new HttpClient(handler);
+            HttpClientHandler handler = new HttpClientHandler
+            {
+                Credentials = credentialCache
+            };
+            client = new HttpClient(handler)
+            {
+                Timeout = new TimeSpan(0, 0, 10)
+            };
         }
 
         public PIWebAPIClient(string username, string password)

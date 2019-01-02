@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AccesoBaseDatos
 {
@@ -28,8 +25,10 @@ namespace AccesoBaseDatos
         /// <param name="valor">valor</param>
         public void AdicionarParametro(string nombre, SqlDbType tipoSql, ParameterDirection direccion, object valor)
         {
-            parametro = new SqlParameter(nombre, tipoSql);
-            parametro.Direction = direccion;
+            parametro = new SqlParameter(nombre, tipoSql)
+            {
+                Direction = direccion
+            };
             if (valor == null)
                 parametro.Value = DBNull.Value;
             else

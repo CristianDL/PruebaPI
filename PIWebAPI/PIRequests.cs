@@ -1,11 +1,11 @@
-﻿using System;
+﻿using POCOs;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Configuration;
 using Newtonsoft.Json.Linq;
-using POCOs;
 
 namespace PIWebAPI
 {
@@ -24,7 +24,7 @@ namespace PIWebAPI
             url.Append(tag);
 
             //using (PIWebAPIClient client = new PIWebAPIClient(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"]))
-            using (PIWebAPIClient client = new PIWebAPIClient())
+            using (PIWebAPIClient client = new PIWebAPIClient(url.ToString()))
             {
                 Task<JObject> t = client.GetAsync(url.ToString());
                 t.Wait();
@@ -58,7 +58,7 @@ namespace PIWebAPI
             url.Append(endTime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK"));
 
             //using (PIWebAPIClient client = new PIWebAPIClient(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"]))
-            using (PIWebAPIClient client = new PIWebAPIClient())
+            using (PIWebAPIClient client = new PIWebAPIClient(url.ToString()))
             {
                 Task<JObject> t = client.GetAsync(url.ToString());
                 t.Wait();
@@ -73,9 +73,11 @@ namespace PIWebAPI
                 {
                     activo.SeriesDatos = new List<SerieDatos>();
                 }
-                SerieDatos serie = new SerieDatos();
-                serie.NombreSerie = Variables.P.ToString();
-                serie.Datos = new Dictionary<DateTime, double>();
+                SerieDatos serie = new SerieDatos
+                {
+                    NombreSerie = Variables.P.ToString(),
+                    Datos = new Dictionary<DateTime, double>()
+                };
                 foreach (var dato in datos)
                 {
                     if (bool.Parse(dato[Constants.GoodField].ToString()))

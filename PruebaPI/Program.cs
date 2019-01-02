@@ -23,8 +23,10 @@ namespace PruebaPI
 
                 foreach (string codigo in codigos)
                 {
-                    ActivoElectrico activo = new ActivoElectrico();
-                    activo.CodigoMID = codigo;
+                    ActivoElectrico activo = new ActivoElectrico
+                    {
+                        CodigoMID = codigo
+                    };
                     activos.Add(activo);
                 }
 
@@ -60,8 +62,8 @@ namespace PruebaPI
                     DateTime fechaCalculo = fechaInicio;
                     while (fechaCalculo < fechaFin)
                     {
-                        KeyValuePair<DateTime, double> datoEnergia = CalculosEnergiaPotencia.CalcularEnergia(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First(), fechaCalculo, fechaCalculo.AddHours(1));
-                        KeyValuePair<DateTime, double> datoPotenciaMaxima = CalculosEnergiaPotencia.CalcularPotenciaMaxima(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First(), fechaCalculo, fechaCalculo.AddHours(1));
+                        KeyValuePair<DateTime, double> datoEnergia = CalculosEnergiaPotencia.CalcularEnergia(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First().Datos, fechaCalculo, fechaCalculo.AddHours(1));
+                        KeyValuePair<DateTime, double> datoPotenciaMaxima = CalculosEnergiaPotencia.CalcularPotenciaMaxima(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First().Datos, fechaCalculo, fechaCalculo.AddHours(1));
 
                         energia.Datos.Add(datoEnergia.Key, datoEnergia.Value);
                         potenciaMaxima.Datos.Add(datoPotenciaMaxima.Key, datoPotenciaMaxima.Value);
