@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POCOs", "POCOs\POCOs.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccesoBaseDatos", "AccesoBaseDatos\AccesoBaseDatos.csproj", "{325042E7-6485-4DB1-9FA5-D8BC279A8842}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APITiempoReal", "APITiempoReal\APITiempoReal.csproj", "{CC74A332-AED9-4AFC-8CE6-28F1ADF64B47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{325042E7-6485-4DB1-9FA5-D8BC279A8842}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{325042E7-6485-4DB1-9FA5-D8BC279A8842}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{325042E7-6485-4DB1-9FA5-D8BC279A8842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC74A332-AED9-4AFC-8CE6-28F1ADF64B47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC74A332-AED9-4AFC-8CE6-28F1ADF64B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC74A332-AED9-4AFC-8CE6-28F1ADF64B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC74A332-AED9-4AFC-8CE6-28F1ADF64B47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -42,10 +42,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculosEnergiaPotencia.cs" />
+    <Compile Include="CalculosSobreActivos.cs" />
     <Compile Include="OperacionesBasicas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AccesoBaseDatos\AccesoBaseDatos.csproj">
+      <Project>{325042e7-6485-4db1-9fa5-d8bc279a8842}</Project>
+      <Name>AccesoBaseDatos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PIWebAPI\PIWebAPI.csproj">
+      <Project>{bb1974c6-2df3-4a69-8bfb-1fa2c9a3b35a}</Project>
+      <Name>PIWebAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\POCOs\POCOs.csproj">
       <Project>{7aeae146-e086-4531-9034-8be89a0d7a05}</Project>
       <Name>POCOs</Name>
