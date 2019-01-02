@@ -20,7 +20,7 @@ namespace PIWebAPI
             {
                 {
                     new Uri(url),
-                    "NTLM",
+                    "Negotiate",
                     new NetworkCredential(ConfigurationManager.AppSettings["username"], ConfigurationManager.AppSettings["password"], ConfigurationManager.AppSettings["domain"])
                 }
             };
