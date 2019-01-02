@@ -35,7 +35,7 @@ namespace CalculosEnPot
             activos = activos.Where(a => a.WebId != null).ToList();
 
             activos = PIRequests.GetRecordedDataAdHoc(activos, fechaInicio.AddDays(-1), fechaFin.AddDays(1));
-            activos = activos.Where(a => a.SeriesDatos.Count > 0 && a.SeriesDatos[0].Datos.Count > 0).ToList();
+            activos = activos.Where(a => a.SeriesDatos.Count > 0 && a.SeriesDatos[0].Datos.Where(x => x.Key >= fechaInicio && x.Key <= fechaFin).Count() > 0).ToList();
 
             foreach (ActivoElectrico activo in activos)
             {

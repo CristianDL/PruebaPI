@@ -30,6 +30,8 @@ namespace PruebaPI
                     activos.Add(activo);
                 }
 
+                Console.WriteLine("Barras iniciales: " + activos.Count());
+
                 Console.WriteLine("Buscando mapeos al MID...");
 
                 foreach (ActivoElectrico activo in activos)
@@ -42,12 +44,31 @@ namespace PruebaPI
                     }
                 }
 
+                List<ActivoElectrico> borrados = activos.Where(a => a.WebId == null).ToList();
+
                 activos = activos.Where(a => a.WebId != null).ToList();
+
+                Console.WriteLine("Barras con WebId: " + activos.Count);
+                Console.WriteLine("Borradas:");
+                foreach (var item in borrados)
+                {
+                    Console.WriteLine(item.CodigoMID);
+                }
 
                 Console.WriteLine("Consultando datos de PI...");
 
                 activos = PIRequests.GetRecordedDataAdHoc(activos, fechaInicio.AddDays(-1), fechaFin.AddDays(1));
-                activos = activos.Where(a => a.SeriesDatos.Count > 0 && a.SeriesDatos[0].Datos.Count > 0).ToList();
+
+                borrados = activos.Where(a => a.SeriesDatos.Count <= 0 || a.SeriesDatos[0].Datos.Where(x => x.Key >= fechaInicio && x.Key <= fechaFin).Count() <= 0).ToList();
+
+                activos = activos.Where(a => a.SeriesDatos.Count > 0 && a.SeriesDatos[0].Datos.Where(x => x.Key >= fechaInicio && x.Key <= fechaFin).Count() > 0).ToList();
+
+                Console.WriteLine("Barras con datos: " + activos.Count);
+                Console.WriteLine("Borradas:");
+                foreach (var item in borrados)
+                {
+                    Console.WriteLine(item.CodigoMID);
+                }
 
                 Console.WriteLine("Calculando energía y potencia máxima...");
 
@@ -107,19 +128,18 @@ namespace PruebaPI
 
                 File.WriteAllText("calculos.csv", resultado.ToString());
             }
-            //catch (Exception e)
-            //{
-            //    StringBuilder error = new StringBuilder();
-            //    error.Append("Error: ").Append(e.Message).Append(Environment.NewLine).Append(e.StackTrace).Append(Environment.NewLine);
-            //    var ex = e.InnerException;
-            //    while (ex != null)
-            //    {
-            //        error.Append(ex.Message).Append(Environment.NewLine).Append(ex.StackTrace).Append(Environment.NewLine);
-            //        ex = ex.InnerException;
-            //    }
-            //    Console.WriteLine(error.ToString());
-
-            //}
+            catch (Exception e)
+            {
+                StringBuilder error = new StringBuilder();
+                error.Append("Error: ").Append(e.Message).Append(Environment.NewLine).Append(e.StackTrace).Append(Environment.NewLine);
+                var ex = e.InnerException;
+                while (ex != null)
+                {
+                    error.Append(ex.Message).Append(Environment.NewLine).Append(ex.StackTrace).Append(Environment.NewLine);
+                    ex = ex.InnerException;
+                }
+                Console.WriteLine(error.ToString());
+            }
             finally
             {
                 Console.WriteLine("Finalizado. Presione una tecla para salir...");

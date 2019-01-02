@@ -21,7 +21,7 @@ namespace POCOs
             {
                 foreach (KeyValuePair<DateTime, double> item in serie.Datos)
                 {
-                    if (item.Key.Minute == 0 && item.Key.Second == 0 && item.Key.Millisecond == 0)
+                    if (item.Key.Minute == 0 && item.Key.Second == 0 && item.Key.Millisecond == 0 && !serie.NombreSerie.Equals(Variables.P.ToString()))
                     {
                         datos.Append(CodigoMID).Append(";").Append(serie.NombreSerie).Append(";").Append(item.Key.Date).Append(";").Append(item.Key.Hour + 1).Append(";").Append(item.Value).Append(Environment.NewLine);
                     }
