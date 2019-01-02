@@ -91,11 +91,11 @@ namespace PruebaPI
             catch (Exception e)
             {
                 StringBuilder error = new StringBuilder();
-                error.Append("Error: ").Append(e.Message).Append(Environment.NewLine).Append(e.StackTrace);
+                error.Append("Error: ").Append(e.Message).Append(Environment.NewLine).Append(e.StackTrace).Append(Environment.NewLine);
                 var ex = e.InnerException;
                 while (ex != null)
                 {
-                    error.Append(ex.Message).Append(Environment.NewLine).Append(ex.StackTrace);
+                    error.Append(ex.Message).Append(Environment.NewLine).Append(ex.StackTrace).Append(Environment.NewLine);
                     ex = ex.InnerException;
                 }
                 Console.WriteLine(error.ToString());
