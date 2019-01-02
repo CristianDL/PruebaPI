@@ -46,7 +46,7 @@ namespace PruebaPI
 
                 Console.WriteLine("Consultando datos de PI...");
 
-                activos = PIRequests.GetRecordedDataAdHoc(activos, fechaInicio.AddHours(-1), fechaFin.AddHours(1));
+                activos = PIRequests.GetRecordedDataAdHoc(activos, fechaInicio.AddDays(-1), fechaFin.AddDays(1));
                 activos = activos.Where(a => a.SeriesDatos.Count > 0 && a.SeriesDatos[0].Datos.Count > 0).ToList();
 
                 Console.WriteLine("Calculando energía y potencia máxima...");
@@ -60,10 +60,28 @@ namespace PruebaPI
                     potenciaMaxima.NombreSerie = Variables.Pmax.ToString();
 
                     DateTime fechaCalculo = fechaInicio;
-                    while (fechaCalculo < fechaFin)
+                    while (fechaCalculo < fechaFin.AddDays(1))
                     {
-                        KeyValuePair<DateTime, double> datoEnergia = CalculosEnergiaPotencia.CalcularEnergia(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First().Datos, fechaCalculo, fechaCalculo.AddHours(1));
-                        KeyValuePair<DateTime, double> datoPotenciaMaxima = CalculosEnergiaPotencia.CalcularPotenciaMaxima(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First().Datos, fechaCalculo, fechaCalculo.AddHours(1));
+                        KeyValuePair<DateTime, double> datoEnergia;
+                        KeyValuePair<DateTime, double> datoPotenciaMaxima;
+
+                        try
+                        {
+                            datoEnergia = CalculosEnergiaPotencia.CalcularEnergia(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First().Datos, fechaCalculo, fechaCalculo.AddHours(1));
+                        }
+                        catch (Exception)
+                        {
+                            datoEnergia = new KeyValuePair<DateTime, double>(fechaCalculo, 0);
+                        }
+
+                        try
+                        {
+                            datoPotenciaMaxima = CalculosEnergiaPotencia.CalcularPotenciaMaxima(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First().Datos, fechaCalculo, fechaCalculo.AddHours(1));
+                        }
+                        catch (Exception)
+                        {
+                            datoPotenciaMaxima = new KeyValuePair<DateTime, double>(fechaCalculo, 0);
+                        }
 
                         energia.Datos.Add(datoEnergia.Key, datoEnergia.Value);
                         potenciaMaxima.Datos.Add(datoPotenciaMaxima.Key, datoPotenciaMaxima.Value);
@@ -76,6 +94,7 @@ namespace PruebaPI
                 }
 
                 StringBuilder resultado = new StringBuilder();
+                resultado.Append("CodigoMID").Append(";").Append("Variable").Append(";").Append("Fecha").Append(";").Append("Hora").Append(";").Append("Valor").Append(Environment.NewLine);
 
                 Console.WriteLine("Generando archivo de resultados...");
 
@@ -88,19 +107,19 @@ namespace PruebaPI
 
                 File.WriteAllText("calculos.csv", resultado.ToString());
             }
-            catch (Exception e)
-            {
-                StringBuilder error = new StringBuilder();
-                error.Append("Error: ").Append(e.Message).Append(Environment.NewLine).Append(e.StackTrace).Append(Environment.NewLine);
-                var ex = e.InnerException;
-                while (ex != null)
-                {
-                    error.Append(ex.Message).Append(Environment.NewLine).Append(ex.StackTrace).Append(Environment.NewLine);
-                    ex = ex.InnerException;
-                }
-                Console.WriteLine(error.ToString());
+            //catch (Exception e)
+            //{
+            //    StringBuilder error = new StringBuilder();
+            //    error.Append("Error: ").Append(e.Message).Append(Environment.NewLine).Append(e.StackTrace).Append(Environment.NewLine);
+            //    var ex = e.InnerException;
+            //    while (ex != null)
+            //    {
+            //        error.Append(ex.Message).Append(Environment.NewLine).Append(ex.StackTrace).Append(Environment.NewLine);
+            //        ex = ex.InnerException;
+            //    }
+            //    Console.WriteLine(error.ToString());
 
-            }
+            //}
             finally
             {
                 Console.WriteLine("Finalizado. Presione una tecla para salir...");

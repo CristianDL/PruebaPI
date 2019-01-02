@@ -34,7 +34,7 @@ namespace CalculosEnPot
 
             activos = activos.Where(a => a.WebId != null).ToList();
 
-            activos = PIRequests.GetRecordedDataAdHoc(activos, fechaInicio.AddHours(-1), fechaFin.AddHours(1));
+            activos = PIRequests.GetRecordedDataAdHoc(activos, fechaInicio.AddDays(-1), fechaFin.AddDays(1));
             activos = activos.Where(a => a.SeriesDatos.Count > 0 && a.SeriesDatos[0].Datos.Count > 0).ToList();
 
             foreach (ActivoElectrico activo in activos)
@@ -45,21 +45,28 @@ namespace CalculosEnPot
                 };
 
                 DateTime fechaCalculo = fechaInicio;
-                while (fechaCalculo < fechaFin)
+                while (fechaCalculo < fechaFin.AddDays(1))
                 {
                     KeyValuePair<DateTime, double> dato;
 
-                    switch (variable)
+                    try
                     {
-                        case Variables.Pmax:
-                            dato = CalculosEnergiaPotencia.CalcularPotenciaMaxima(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First().Datos, fechaCalculo, fechaCalculo.AddHours(1));
-                            break;
-                        case Variables.E:
-                            dato = CalculosEnergiaPotencia.CalcularEnergia(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First().Datos, fechaCalculo, fechaCalculo.AddHours(1));
-                            break;
-                        default:
-                            dato = new KeyValuePair<DateTime, double>(fechaCalculo, 0);
-                            break;
+                        switch (variable)
+                        {
+                            case Variables.Pmax:
+                                dato = CalculosEnergiaPotencia.CalcularPotenciaMaxima(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First().Datos, fechaCalculo, fechaCalculo.AddHours(1));
+                                break;
+                            case Variables.E:
+                                dato = CalculosEnergiaPotencia.CalcularEnergia(activo.SeriesDatos.Where(x => x.NombreSerie.Equals(Variables.P.ToString())).First().Datos, fechaCalculo, fechaCalculo.AddHours(1));
+                                break;
+                            default:
+                                dato = new KeyValuePair<DateTime, double>(fechaCalculo, 0);
+                                break;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        dato = new KeyValuePair<DateTime, double>(fechaCalculo, 0);
                     }
 
                     serie.Datos.Add(dato.Key, dato.Value);

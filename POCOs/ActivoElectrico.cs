@@ -16,7 +16,6 @@ namespace POCOs
         public override string ToString()
         {
             StringBuilder datos = new StringBuilder();
-            datos.Append("CodigoMID").Append(";").Append("Variable").Append(";").Append("Fecha").Append(";").Append("Hora").Append(";").Append("Valor").Append(Environment.NewLine);
 
             foreach (SerieDatos serie in SeriesDatos)
             {
