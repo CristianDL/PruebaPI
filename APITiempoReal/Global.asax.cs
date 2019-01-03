@@ -7,7 +7,7 @@ using System.Web.Routing;
 
 namespace APITiempoReal
 {
-    public class WebApiApplication : System.Web.HttpApplication
+    public class WebApiApplication : HttpApplication
     {
         protected void Application_Start()
         {

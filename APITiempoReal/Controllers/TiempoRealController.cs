@@ -7,9 +7,12 @@ using System.Web.Http;
 
 namespace APITiempoReal.Controllers
 {
+    [RoutePrefix("api/tiemporeal")]
     public class TiempoRealController : ApiController
     {
         [HttpGet]
+        [Route("energia")]
+        [ActionName("energia")]
         public IHttpActionResult CalcularEnergia(string[] codigosBarras, DateTime fechaInicio, DateTime fechaFin)
         {
             List<ActivoElectrico> activos = CalculosSobreActivos.CalcularVariableElectrica(Variables.E, codigosBarras, fechaInicio, fechaFin);
@@ -27,11 +30,13 @@ namespace APITiempoReal.Controllers
             }
             else
             {
-                return NotFound();
+                return BadRequest();
             }
         }
 
         [HttpGet]
+        [Route("energia")]
+        [ActionName("potenciaMaxima")]
         public IHttpActionResult CalcularPotenciaMaxima(string[] codigosBarras, DateTime fechaInicio, DateTime fechaFin)
         {
             List<ActivoElectrico> activos = CalculosSobreActivos.CalcularVariableElectrica(Variables.Pmax, codigosBarras, fechaInicio, fechaFin);
@@ -49,7 +54,7 @@ namespace APITiempoReal.Controllers
             }
             else
             {
-                return NotFound();
+                return BadRequest();
             }
         }
     }
