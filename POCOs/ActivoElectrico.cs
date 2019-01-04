@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -21,15 +22,18 @@ namespace POCOs
 
             foreach (SerieDatos serie in SeriesDatos)
             {
-                foreach (KeyValuePair<DateTime, double> item in serie.Datos)
+                List<DateTime> fechas = serie.Datos.Keys.ToList();
+                fechas.Sort();
+
+                foreach (DateTime fecha in fechas)
                 {
-                    if (item.Key.Minute == 0 && item.Key.Second == 0 && item.Key.Millisecond == 0 && !serie.NombreSerie.Equals(Variables.P.ToString()))
+                    if (fecha.Minute == 0 && fecha.Second == 0 && fecha.Millisecond == 0 && !serie.NombreSerie.Equals(Variables.P.ToString()))
                     {
-                        datos.Append(CodigoMID).Append(";").Append(serie.NombreSerie).Append(";").Append(item.Key.Date).Append(";").Append(item.Key.Hour + 1).Append(";").Append(item.Value).Append(Environment.NewLine);
+                        datos.Append(CodigoMID).Append(";").Append(serie.NombreSerie).Append(";").Append(fecha.Date).Append(";").Append(fecha.Hour + 1).Append(";").Append(serie.Datos[fecha]).Append(Environment.NewLine);
                     }
                     else
                     {
-                        datos.Append(CodigoMID).Append(";").Append(serie.NombreSerie).Append(";").Append(item.Key.Date).Append(";").Append(item.Key.TimeOfDay.ToString("g")).Append(";").Append(item.Value).Append(Environment.NewLine);
+                        datos.Append(CodigoMID).Append(";").Append(serie.NombreSerie).Append(";").Append(fecha.Date).Append(";").Append(fecha.TimeOfDay.ToString("g")).Append(";").Append(serie.Datos[fecha]).Append(Environment.NewLine);
                     }
                 }
             }
