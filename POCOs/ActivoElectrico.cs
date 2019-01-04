@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace POCOs
 {
+    [DataContract]
     public class ActivoElectrico
     {
+        [DataMember]
         public string CodigoMID { get; set; }
         public string Tag { get; set; }
         public string WebId { get; set; }
+        [DataMember]
         public List<SerieDatos> SeriesDatos { get; set; }
 
         public override string ToString()
