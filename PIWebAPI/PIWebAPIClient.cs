@@ -45,8 +45,8 @@ namespace PIWebAPI
 
         public async Task<JObject> GetAsync(string uri)
         {
-            HttpResponseMessage response =  await client.GetAsync(uri);
-            string content = await response.Content.ReadAsStringAsync();
+            HttpResponseMessage response =  await client.GetAsync(uri).ConfigureAwait(false);
+            string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             if (!response.IsSuccessStatusCode)
             {
                 string responseMessage = string.Format("Error: {0}", (int)response.StatusCode);

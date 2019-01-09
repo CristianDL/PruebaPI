@@ -47,7 +47,7 @@ namespace PIWebAPI
 
             using (PIWebAPIClient client = new PIWebAPIClient(url.ToString()))
             {
-                JObject obj = await client.GetAsync(url.ToString());
+                JObject obj = await client.GetAsync(url.ToString()).ConfigureAwait(false);
                 webId = obj[Constants.WebIdField].ToString();
             }
 
@@ -135,7 +135,7 @@ namespace PIWebAPI
 
             using (PIWebAPIClient client = new PIWebAPIClient(url.ToString()))
             {
-                JObject obj = await client.GetAsync(url.ToString());
+                JObject obj = await client.GetAsync(url.ToString()).ConfigureAwait(false);
                 items = (JArray) obj[Constants.ItemsField];
             }
 

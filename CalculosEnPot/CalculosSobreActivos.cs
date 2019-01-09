@@ -99,13 +99,13 @@ namespace CalculosEnPot
                 activo.Tag = consulta.ObtenerTagMapeo(activo.CodigoMID);
                 if (!string.IsNullOrEmpty(activo.Tag))
                 {
-                    activo.WebId = await PIRequests.GetAttributeWebIdAsync(activo.Tag);
+                    activo.WebId = await PIRequests.GetAttributeWebIdAsync(activo.Tag).ConfigureAwait(false);
                 }
             }
 
             activos = activos.Where(a => a.WebId != null).ToList();
 
-            activos = await PIRequests.GetRecordedDataAdHocAsync(activos, fechaInicio.AddDays(-1), fechaFin.AddDays(1));
+            activos = await PIRequests.GetRecordedDataAdHocAsync(activos, fechaInicio.AddDays(-1), fechaFin.AddDays(1)).ConfigureAwait(false);
             activos = activos.Where(a => a.SeriesDatos.Count > 0 && a.SeriesDatos[0].Datos.Where(x => x.Key >= fechaInicio && x.Key <= fechaFin).Count() > 0).ToList();
 
             foreach (ActivoElectrico activo in activos)

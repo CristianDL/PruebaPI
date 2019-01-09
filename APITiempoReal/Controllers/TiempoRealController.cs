@@ -38,7 +38,7 @@ namespace APITiempoReal.Controllers
                     item.SeriesDatos.RemoveAll(s => !s.NombreSerie.Equals(Variables.E.ToString()));
                 }
 
-                var json = JsonConvert.SerializeObject(activos);
+                var json = JsonConvert.SerializeObject(ActivoElectrico.Desglosar(activos));
                 return Ok(json);
             }
             else
@@ -70,7 +70,7 @@ namespace APITiempoReal.Controllers
                     item.SeriesDatos.RemoveAll(s => !s.NombreSerie.Equals(Variables.Pmax.ToString()));
                 }
 
-                var json = JsonConvert.SerializeObject(activos);
+                var json = JsonConvert.SerializeObject(ActivoElectrico.Desglosar(activos));
                 return Ok(json);
             }
             else

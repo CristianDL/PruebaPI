@@ -40,5 +40,56 @@ namespace POCOs
 
             return datos.ToString();
         }
+
+        public List<RegistroVariable> Desglosar()
+        {
+            List<RegistroVariable> registros = new List<RegistroVariable>();
+
+            foreach (SerieDatos serie in SeriesDatos)
+            {
+                List<DateTime> fechas = serie.Datos.Keys.ToList();
+                fechas.Sort();
+
+                foreach (DateTime fecha in fechas)
+                {
+                    if (fecha.Minute == 0 && fecha.Second == 0 && fecha.Millisecond == 0 && !serie.NombreSerie.Equals(Variables.P.ToString()))
+                    {
+                        registros.Add(new RegistroVariable
+                        {
+                            CodigoMID = this.CodigoMID,
+                            Variable = serie.NombreSerie,
+                            Fecha = fecha.Date.ToString(),
+                            Hora = "" + (fecha.Hour + 1),
+                            Valor = "" + serie.Datos[fecha]
+                        });
+                    }
+                    else
+                    {
+                        registros.Add(new RegistroVariable
+                        {
+                            CodigoMID = this.CodigoMID,
+                            Variable = serie.NombreSerie,
+                            Fecha = fecha.Date.ToString(),
+                            Hora = fecha.TimeOfDay.ToString("g"),
+                            Valor = "" + serie.Datos[fecha]
+                        });
+                    }
+                }
+            }
+
+            return registros;
+        }
+
+        public static List<RegistroVariable> Desglosar(List<ActivoElectrico> activos)
+        {
+            List<RegistroVariable> registros = new List<RegistroVariable>();
+
+            foreach (ActivoElectrico activo in activos)
+            {
+                registros.AddRange(activo.Desglosar());
+            }
+
+            return registros;
+        }
     }
 }
