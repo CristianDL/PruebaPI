@@ -1,7 +1,6 @@
 ﻿using CalculosEnPot;
 using Newtonsoft.Json;
 using POCOs;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,11 +22,9 @@ namespace APITiempoReal.Controllers
         [HttpGet]
         [Route("energia")]
         [ActionName("energia")]
-        public IHttpActionResult CalcularEnergia([FromBody] ParametrosConsulta parametros)
+        public async Task<IHttpActionResult> CalcularEnergia([FromBody] ParametrosConsulta parametros)
         {
-            Task<List<ActivoElectrico>> t = CalculosSobreActivos.CalcularVariableElectricaAsync(Variables.E, parametros.CodigosBarras, parametros.FechaInicio, parametros.FechaFin);
-            t.Wait();
-            List<ActivoElectrico> activos = t.Result;
+            List<ActivoElectrico> activos = await CalculosSobreActivos.CalcularVariableElectricaAsync(Variables.E, parametros.CodigosBarras, parametros.FechaInicio, parametros.FechaFin);
 
             if (activos.Count > 0)
             {
@@ -55,11 +52,9 @@ namespace APITiempoReal.Controllers
         [HttpGet]
         [Route("potenciaMaxima")]
         [ActionName("potenciaMaxima")]
-        public IHttpActionResult CalcularPotenciaMaxima([FromBody] ParametrosConsulta parametros)
+        public async Task<IHttpActionResult> CalcularPotenciaMaxima([FromBody] ParametrosConsulta parametros)
         {
-            Task<List<ActivoElectrico>> t = CalculosSobreActivos.CalcularVariableElectricaAsync(Variables.Pmax, parametros.CodigosBarras, parametros.FechaInicio, parametros.FechaFin);
-            t.Wait();
-            List<ActivoElectrico> activos = t.Result;
+            List<ActivoElectrico> activos = await CalculosSobreActivos.CalcularVariableElectricaAsync(Variables.Pmax, parametros.CodigosBarras, parametros.FechaInicio, parametros.FechaFin);
 
             if (activos.Count > 0)
             {
