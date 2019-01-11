@@ -11,28 +11,6 @@ namespace PIWebAPI
 {
     public static class PIRequests
     {
-        public static string GetAttributeWebId(string tag)
-        {
-            string webId = string.Empty;
-            StringBuilder url = new StringBuilder();
-
-            url.Append(ConfigurationManager.AppSettings["baseUrl"]);
-            url.Append(Constants.AttributeController);
-            url.Append(Constants.QueryStringStart);
-            url.Append(Constants.PathParameter);
-            url.Append(ConfigurationManager.AppSettings["baseTagPath"]);
-            url.Append(tag);
-
-            using (PIWebAPIClient client = new PIWebAPIClient(url.ToString()))
-            {
-                Task<JObject> t = client.GetAsync(url.ToString());
-                t.Wait();
-                webId = t.Result[Constants.WebIdField].ToString();
-            }
-
-            return webId;
-        }
-
         public static async Task<string> GetAttributeWebIdAsync(string tag)
         {
             string webId = string.Empty;
@@ -54,7 +32,7 @@ namespace PIWebAPI
             return webId;
         }
 
-        public static List<ActivoElectrico> GetRecordedDataAdHoc(List<ActivoElectrico> activos, DateTime startTime, DateTime endTime)
+        public static async Task<List<ActivoElectrico>> GetRecordedDataAdHocAsync(List<ActivoElectrico> activos, DateTimeOffset startTime, DateTimeOffset endTime)
         {
             JArray items = null;
             StringBuilder url = new StringBuilder();
@@ -72,66 +50,10 @@ namespace PIWebAPI
                 url.Append(Constants.QueryStringParameterDelimiter);
             }
             url.Append(Constants.StartTimeParameter);
-            url.Append(startTime.ToString("u"));
+            url.Append(startTime.ToString("yyyy-MM-ddTHH:mm:sszzz"));
             url.Append(Constants.QueryStringParameterDelimiter);
             url.Append(Constants.EndTimeParameter);
-            url.Append(endTime.ToString("u"));
-
-            using (PIWebAPIClient client = new PIWebAPIClient(url.ToString()))
-            {
-                Task<JObject> t = client.GetAsync(url.ToString());
-                t.Wait();
-                items = (JArray) t.Result[Constants.ItemsField];
-            }
-
-            foreach (ActivoElectrico activo in activos)
-            {
-                JObject serieDatos = (JObject)items.Where(p => p[Constants.NameField].ToString().Equals(activo.Tag)).First();
-                JArray datos = (JArray) serieDatos[Constants.ItemsField];
-                if (activo.SeriesDatos == null)
-                {
-                    activo.SeriesDatos = new List<SerieDatos>();
-                }
-                SerieDatos serie = new SerieDatos
-                {
-                    NombreSerie = Variables.P.ToString(),
-                    Datos = new Dictionary<DateTime, double>()
-                };
-                foreach (var dato in datos)
-                {
-                    if (bool.Parse(dato[Constants.GoodField].ToString()) && !serie.Datos.ContainsKey((DateTime)dato[Constants.TimestampField]))
-                    {
-                        serie.Datos.Add((DateTime)dato[Constants.TimestampField], (double)dato[Constants.ValueField]);
-                    }
-                }
-                activo.SeriesDatos.Add(serie);
-            }
-
-            return activos;
-        }
-
-        public static async Task<List<ActivoElectrico>> GetRecordedDataAdHocAsync(List<ActivoElectrico> activos, DateTime startTime, DateTime endTime)
-        {
-            JArray items = null;
-            StringBuilder url = new StringBuilder();
-
-            url.Append(ConfigurationManager.AppSettings["baseUrl"]);
-            url.Append(Constants.StreamSetController);
-            url.Append(Constants.Slash);
-            url.Append(Constants.RecordedDataLink);
-            url.Append(Constants.QueryStringStart);
-            for (int i = 0; i < activos.Count; i++)
-            {
-                ActivoElectrico temp = activos.ElementAt(i);
-                url.Append(Constants.WebIdParameter);
-                url.Append(temp.WebId);
-                url.Append(Constants.QueryStringParameterDelimiter);
-            }
-            url.Append(Constants.StartTimeParameter);
-            url.Append(startTime.ToString("u"));
-            url.Append(Constants.QueryStringParameterDelimiter);
-            url.Append(Constants.EndTimeParameter);
-            url.Append(endTime.ToString("u"));
+            url.Append(endTime.ToString("yyyy-MM-ddTHH:mm:sszzz"));
 
             using (PIWebAPIClient client = new PIWebAPIClient(url.ToString()))
             {
@@ -143,20 +65,90 @@ namespace PIWebAPI
             {
                 JObject serieDatos = (JObject)items.Where(p => p[Constants.NameField].ToString().Equals(activo.Tag)).First();
                 JArray datos = (JArray)serieDatos[Constants.ItemsField];
-                if (activo.SeriesDatos == null)
+
+                SerieDatos serie;
+                if (activo.SeriesDatos.Count > 0 && activo.SeriesDatos.Exists(s => s.NombreSerie.Equals(Variables.P.ToString())))
                 {
-                    activo.SeriesDatos = new List<SerieDatos>();
+                    serie = activo.SeriesDatos.Find(s => s.NombreSerie.Equals(Variables.P.ToString()));
                 }
-                SerieDatos serie = new SerieDatos
+                else
                 {
-                    NombreSerie = Variables.P.ToString(),
-                    Datos = new Dictionary<DateTime, double>()
-                };
+                    serie = new SerieDatos
+                    {
+                        NombreSerie = Variables.P.ToString(),
+                        Datos = new Dictionary<DateTimeOffset, double>()
+                    };
+                    activo.SeriesDatos.Add(serie);
+                }
+
                 foreach (var dato in datos)
                 {
-                    if (bool.Parse(dato[Constants.GoodField].ToString()) && !serie.Datos.ContainsKey((DateTime)dato[Constants.TimestampField]))
+                    DateTimeOffset fecha = (DateTimeOffset)dato[Constants.TimestampField];
+                    if (bool.Parse(dato[Constants.GoodField].ToString()) && !serie.Datos.ContainsKey(fecha.ToOffset(startTime.Offset)))
                     {
-                        serie.Datos.Add((DateTime)dato[Constants.TimestampField], (double)dato[Constants.ValueField]);
+                        serie.Datos.Add(fecha.ToOffset(startTime.Offset), (double)dato[Constants.ValueField]);
+                    }
+                }
+            }
+
+            return activos;
+        }
+
+        public static async Task<List<ActivoElectrico>> GetPlotDataAdHocAsync(List<ActivoElectrico> activos, DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            JArray items = null;
+            StringBuilder url = new StringBuilder();
+
+            url.Append(ConfigurationManager.AppSettings["baseUrl"]);
+            url.Append(Constants.StreamSetController);
+            url.Append(Constants.Slash);
+            url.Append(Constants.PlotDataLink);
+            url.Append(Constants.QueryStringStart);
+            for (int i = 0; i < activos.Count; i++)
+            {
+                ActivoElectrico temp = activos.ElementAt(i);
+                url.Append(Constants.WebIdParameter);
+                url.Append(temp.WebId);
+                url.Append(Constants.QueryStringParameterDelimiter);
+            }
+            url.Append(Constants.StartTimeParameter);
+            url.Append(startTime.ToString("yyyy-MM-ddTHH:mm:sszzz"));
+            url.Append(Constants.QueryStringParameterDelimiter);
+            url.Append(Constants.EndTimeParameter);
+            url.Append(endTime.ToString("yyyy-MM-ddTHH:mm:sszzz"));
+
+            using (PIWebAPIClient client = new PIWebAPIClient(url.ToString()))
+            {
+                JObject obj = await client.GetAsync(url.ToString()).ConfigureAwait(false);
+                items = (JArray)obj[Constants.ItemsField];
+            }
+
+            foreach (ActivoElectrico activo in activos)
+            {
+                JObject serieDatos = (JObject)items.Where(p => p[Constants.NameField].ToString().Equals(activo.Tag)).First();
+                JArray datos = (JArray)serieDatos[Constants.ItemsField];
+
+                SerieDatos serie;
+                if (activo.SeriesDatos.Count > 0 && activo.SeriesDatos.Exists(s => s.NombreSerie.Equals(Variables.P.ToString())))
+                {
+                    serie = activo.SeriesDatos.Find(s => s.NombreSerie.Equals(Variables.P.ToString()));
+                }
+                else
+                {
+                    serie = new SerieDatos
+                    {
+                        NombreSerie = Variables.P.ToString(),
+                        Datos = new Dictionary<DateTimeOffset, double>()
+                    };
+                    activo.SeriesDatos.Add(serie);
+                }
+
+                foreach (var dato in datos)
+                {
+                    DateTimeOffset fecha = (DateTimeOffset)dato[Constants.TimestampField];
+                    if (bool.Parse(dato[Constants.GoodField].ToString()) && !serie.Datos.ContainsKey(fecha.ToOffset(startTime.Offset)))
+                    {
+                        serie.Datos.Add(fecha.ToOffset(startTime.Offset), (double)dato[Constants.ValueField]);
                     }
                 }
                 activo.SeriesDatos.Add(serie);

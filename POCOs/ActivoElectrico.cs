@@ -16,16 +16,21 @@ namespace POCOs
         [DataMember]
         public List<SerieDatos> SeriesDatos { get; set; }
 
+        public ActivoElectrico()
+        {
+            SeriesDatos = new List<SerieDatos>();
+        }
+
         public override string ToString()
         {
             StringBuilder datos = new StringBuilder();
 
             foreach (SerieDatos serie in SeriesDatos)
             {
-                List<DateTime> fechas = serie.Datos.Keys.ToList();
+                List<DateTimeOffset> fechas = serie.Datos.Keys.ToList();
                 fechas.Sort();
 
-                foreach (DateTime fecha in fechas)
+                foreach (DateTimeOffset fecha in fechas)
                 {
                     if (fecha.Minute == 0 && fecha.Second == 0 && fecha.Millisecond == 0 && !serie.NombreSerie.Equals(Variables.P.ToString()))
                     {
@@ -47,10 +52,10 @@ namespace POCOs
 
             foreach (SerieDatos serie in SeriesDatos)
             {
-                List<DateTime> fechas = serie.Datos.Keys.ToList();
+                List<DateTimeOffset> fechas = serie.Datos.Keys.ToList();
                 fechas.Sort();
 
-                foreach (DateTime fecha in fechas)
+                foreach (DateTimeOffset fecha in fechas)
                 {
                     if (fecha.Minute == 0 && fecha.Second == 0 && fecha.Millisecond == 0 && !serie.NombreSerie.Equals(Variables.P.ToString()))
                     {

@@ -9,7 +9,7 @@ namespace POCOs
     public class ParametrosConsulta
     {
         public string[] CodigosBarras { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public DateTime FechaFin { get; set; }
+        public DateTimeOffset FechaInicio { get; set; }
+        public DateTimeOffset FechaFin { get; set; }
     }
 }

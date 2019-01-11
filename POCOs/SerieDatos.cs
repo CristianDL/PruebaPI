@@ -10,11 +10,11 @@ namespace POCOs
         [DataMember]
         public string NombreSerie { get; set; }
         [DataMember]
-        public Dictionary<DateTime, double> Datos { get; set; }
+        public Dictionary<DateTimeOffset, double> Datos { get; set; }
 
         public SerieDatos()
         {
-            Datos = new Dictionary<DateTime, double>();
+            Datos = new Dictionary<DateTimeOffset, double>();
         }
     }
 }

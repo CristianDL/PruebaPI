@@ -19,6 +19,7 @@
         public const string GoodField = "Good";
 
         public const string RecordedDataLink = "recorded";
+        public const string PlotDataLink = "plot";
 
         public const string Slash = "/";
         public const string QueryStringStart = "?";

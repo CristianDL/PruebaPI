@@ -6,42 +6,42 @@ namespace CalculosEnPot
 {
     public static class CalculosEnergiaPotencia
     {
-        public static KeyValuePair<DateTime, double> CalcularEnergia(Dictionary<DateTime, double> seriePotencia, DateTime fechaInicio, DateTime fechaFin)
+        public static KeyValuePair<DateTimeOffset, double> CalcularEnergia(Dictionary<DateTimeOffset, double> seriePotencia, DateTimeOffset fechaInicio, DateTimeOffset fechaFin)
         {
             if (!seriePotencia.ContainsKey(fechaInicio))
             {
-                KeyValuePair<DateTime, double> datoEst = OperacionesBasicas.InterpolacionLineal(seriePotencia, fechaInicio);
+                KeyValuePair<DateTimeOffset, double> datoEst = OperacionesBasicas.InterpolacionLineal(seriePotencia, fechaInicio);
                 seriePotencia.Add(datoEst.Key, datoEst.Value);
             }
             if (!seriePotencia.ContainsKey(fechaFin))
             {
-                KeyValuePair<DateTime, double> datoEst = OperacionesBasicas.InterpolacionLineal(seriePotencia, fechaFin);
+                KeyValuePair<DateTimeOffset, double> datoEst = OperacionesBasicas.InterpolacionLineal(seriePotencia, fechaFin);
                 seriePotencia.Add(datoEst.Key, datoEst.Value);
             }
 
-            List<KeyValuePair<DateTime, double>> datosRecortados = seriePotencia.Where(x => x.Key >= fechaInicio && x.Key <= fechaFin).ToList();
-            Dictionary<DateTime, double> serieRecortada = datosRecortados.ToDictionary(pair => pair.Key, pair => pair.Value);
+            List<KeyValuePair<DateTimeOffset, double>> datosRecortados = seriePotencia.Where(x => x.Key >= fechaInicio && x.Key <= fechaFin).ToList();
+            Dictionary<DateTimeOffset, double> serieRecortada = datosRecortados.ToDictionary(pair => pair.Key, pair => pair.Value);
 
-            return new KeyValuePair<DateTime, double>(fechaInicio, OperacionesBasicas.IntegracionTrapezoidal(serieRecortada));
+            return new KeyValuePair<DateTimeOffset, double>(fechaInicio, OperacionesBasicas.IntegracionTrapezoidal(serieRecortada));
         }
 
-        public static KeyValuePair<DateTime, double> CalcularPotenciaMaxima(Dictionary<DateTime, double> seriePotencia, DateTime fechaInicio, DateTime fechaFin)
+        public static KeyValuePair<DateTimeOffset, double> CalcularPotenciaMaxima(Dictionary<DateTimeOffset, double> seriePotencia, DateTimeOffset fechaInicio, DateTimeOffset fechaFin)
         {
             if (!seriePotencia.ContainsKey(fechaInicio))
             {
-                KeyValuePair<DateTime, double> datoEst = OperacionesBasicas.InterpolacionLineal(seriePotencia, fechaInicio);
+                KeyValuePair<DateTimeOffset, double> datoEst = OperacionesBasicas.InterpolacionLineal(seriePotencia, fechaInicio);
                 seriePotencia.Add(datoEst.Key, datoEst.Value);
             }
             if (!seriePotencia.ContainsKey(fechaFin))
             {
-                KeyValuePair<DateTime, double> datoEst = OperacionesBasicas.InterpolacionLineal(seriePotencia, fechaFin);
+                KeyValuePair<DateTimeOffset, double> datoEst = OperacionesBasicas.InterpolacionLineal(seriePotencia, fechaFin);
                 seriePotencia.Add(datoEst.Key, datoEst.Value);
             }
 
-            List<KeyValuePair<DateTime, double>> datosRecortados = seriePotencia.Where(x => x.Key >= fechaInicio && x.Key <= fechaFin).ToList();
-            Dictionary<DateTime, double> serieRecortada = datosRecortados.ToDictionary(pair => pair.Key, pair => pair.Value);
+            List<KeyValuePair<DateTimeOffset, double>> datosRecortados = seriePotencia.Where(x => x.Key >= fechaInicio && x.Key <= fechaFin).ToList();
+            Dictionary<DateTimeOffset, double> serieRecortada = datosRecortados.ToDictionary(pair => pair.Key, pair => pair.Value);
 
-            return new KeyValuePair<DateTime, double>(fechaInicio, serieRecortada.Values.ToList().Max());
+            return new KeyValuePair<DateTimeOffset, double>(fechaInicio, serieRecortada.Values.ToList().Max());
         }
     }
 }

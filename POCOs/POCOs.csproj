@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivoElectrico.cs" />
+    <Compile Include="MensajesError.cs" />
     <Compile Include="ParametrosConsulta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistroVariable.cs" />

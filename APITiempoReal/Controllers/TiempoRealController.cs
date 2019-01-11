@@ -70,7 +70,30 @@ namespace APITiempoReal.Controllers
             }
             else
             {
-                return BadRequest();
+                return BadRequest(MensajesError.NoHayDatos);
+            }
+        }
+
+        /// <summary>
+        /// Consulta la potencia instantánea para las barras con códigos provistos por parámetro, entre dos fechas determinadas.
+        /// </summary>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("potencia")]
+        [ActionName("potencia")]
+        public async Task<IHttpActionResult> ConsultarPotenciaInstantanea([FromBody] ParametrosConsulta parametros)
+        {
+            List<ActivoElectrico> activos = await CalculosSobreActivos.ConsultarPotenciaInstantaneaAsync(parametros.CodigosBarras, parametros.FechaInicio, parametros.FechaFin);
+
+            if (activos.Count > 0)
+            {
+                var json = JsonConvert.SerializeObject(ActivoElectrico.Desglosar(activos));
+                return Ok(json);
+            }
+            else
+            {
+                return BadRequest(MensajesError.NoHayDatos);
             }
         }
     }
