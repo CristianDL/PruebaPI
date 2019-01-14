@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using APITiempoReal.Controllers;
 using System.Web.Http;
 
 namespace APITiempoReal
@@ -21,6 +19,8 @@ namespace APITiempoReal
             // Rutas de API web
             config.MapHttpAttributeRoutes();
 
+            config.MessageHandlers.Add(new TokenValidationHandler());
+
             config.Routes.MapHttpRoute(
                 name: "Help",
                 routeTemplate: "{controller}",
@@ -37,8 +37,6 @@ namespace APITiempoReal
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
-            
         }
     }
 }

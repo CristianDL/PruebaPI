@@ -1,14 +1,15 @@
+using APITiempoReal.Areas.HelpPage.ModelDescriptions;
+using APITiempoReal.Areas.HelpPage.Models;
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using APITiempoReal.Areas.HelpPage.ModelDescriptions;
-using APITiempoReal.Areas.HelpPage.Models;
 
 namespace APITiempoReal.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.
     /// </summary>
+    [System.Web.Mvc.AllowAnonymous]
     public class HelpController : Controller
     {
         private const string ErrorViewName = "Error";

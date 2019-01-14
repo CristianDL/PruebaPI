@@ -11,6 +11,7 @@ namespace APITiempoReal.Controllers
     /// <summary>
     /// Controlador creado para acceder a las operaciones
     /// </summary>
+    [Authorize]
     [RoutePrefix("api/tiemporeal")]
     public class TiempoRealController : ApiController
     {
@@ -35,8 +36,7 @@ namespace APITiempoReal.Controllers
                     item.SeriesDatos.RemoveAll(s => !s.NombreSerie.Equals(Variables.E.ToString()));
                 }
 
-                var json = JsonConvert.SerializeObject(ActivoElectrico.Desglosar(activos));
-                return Ok(json);
+                return Ok(ActivoElectrico.Desglosar(activos));
             }
             else
             {
@@ -65,8 +65,7 @@ namespace APITiempoReal.Controllers
                     item.SeriesDatos.RemoveAll(s => !s.NombreSerie.Equals(Variables.Pmax.ToString()));
                 }
 
-                var json = JsonConvert.SerializeObject(ActivoElectrico.Desglosar(activos));
-                return Ok(json);
+                return Ok(ActivoElectrico.Desglosar(activos));
             }
             else
             {
@@ -88,8 +87,7 @@ namespace APITiempoReal.Controllers
 
             if (activos.Count > 0)
             {
-                var json = JsonConvert.SerializeObject(ActivoElectrico.Desglosar(activos));
-                return Ok(json);
+                return Ok(ActivoElectrico.Desglosar(activos));
             }
             else
             {
