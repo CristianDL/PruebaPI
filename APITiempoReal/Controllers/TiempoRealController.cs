@@ -40,7 +40,7 @@ namespace APITiempoReal.Controllers
             }
             else
             {
-                return BadRequest();
+                return BadRequest(MensajesError.NoHayDatos);
             }
         }
 
