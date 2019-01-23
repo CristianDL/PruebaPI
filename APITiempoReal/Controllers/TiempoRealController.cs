@@ -1,5 +1,4 @@
 ﻿using CalculosEnPot;
-using Newtonsoft.Json;
 using POCOs;
 using System.Collections.Generic;
 using System.Linq;
