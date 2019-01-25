@@ -36,7 +36,7 @@ namespace APITiempoReal.Controllers
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
             //TODO: La autenticación se está haciendo por ahora con la hora del servidor como password, sin validar usuario.
-            string pass = DateTimeOffset.Now.ToString("hhmm");            
+            string pass = DateTimeOffset.Now.ToString("HHmm");            
             
             if (login.Password.Equals(pass))
             {

@@ -25,16 +25,33 @@ namespace AccesoBaseDatos
         public DataTable ObtenerDataTable(string nombreSP, SqlParameter[] parametros)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(cadenaConexion))
-            using (SqlCommand cmd = new SqlCommand(nombreSP, conn))
-            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            int intentoActual = 0;
+            int maximoIntentos = int.Parse(ConfigurationManager.AppSettings["maxIntentosConexion"]);
+            while (intentoActual < maximoIntentos)
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                if (parametros != null)
+                try
                 {
-                    cmd.Parameters.AddRange(parametros);
+                    using (SqlConnection conn = new SqlConnection(cadenaConexion))
+                    using (SqlCommand cmd = new SqlCommand(nombreSP, conn))
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (parametros != null)
+                        {
+                            cmd.Parameters.AddRange(parametros);
+                        }
+                        da.Fill(dt);
+                        intentoActual = maximoIntentos;
+                    }
                 }
-                da.Fill(dt);
+                catch (Exception e)
+                {
+                    intentoActual++;
+                    if (intentoActual == maximoIntentos)
+                    {
+                        throw e;
+                    }
+                }
             }
             return dt;
         }
@@ -49,16 +66,33 @@ namespace AccesoBaseDatos
         public DataRow ObtenerDataRow(string nombreSP, SqlParameter[] parametros)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(cadenaConexion))
-            using (SqlCommand cmd = new SqlCommand(nombreSP, conn))
-            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            int intentoActual = 0;
+            int maximoIntentos = int.Parse(ConfigurationManager.AppSettings["maxIntentosConexion"]);
+            while (intentoActual < maximoIntentos)
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                if (parametros != null)
+                try
                 {
-                    cmd.Parameters.AddRange(parametros);
+                    using (SqlConnection conn = new SqlConnection(cadenaConexion))
+                    using (SqlCommand cmd = new SqlCommand(nombreSP, conn))
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (parametros != null)
+                        {
+                            cmd.Parameters.AddRange(parametros);
+                        }
+                        da.Fill(dt);
+                        intentoActual = maximoIntentos;
+                    }
                 }
-                da.Fill(dt);
+                catch (Exception e)
+                {
+                    intentoActual++;
+                    if (intentoActual == maximoIntentos)
+                    {
+                        throw e;
+                    }
+                }
             }
             if (dt.Rows.Count > 0)
             {
@@ -79,16 +113,33 @@ namespace AccesoBaseDatos
         public int EjecutarQuery(string nombreSP, SqlParameter[] parametros)
         {
             int filasAfectadas = 0;
-            using (SqlConnection conn = new SqlConnection(cadenaConexion))
-            using (SqlCommand cmd = new SqlCommand(nombreSP, conn))
+            int intentoActual = 0;
+            int maximoIntentos = int.Parse(ConfigurationManager.AppSettings["maxIntentosConexion"]);
+            while (intentoActual < maximoIntentos)
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                if (parametros != null)
+                try
                 {
-                    cmd.Parameters.AddRange(parametros);
+                    using (SqlConnection conn = new SqlConnection(cadenaConexion))
+                    using (SqlCommand cmd = new SqlCommand(nombreSP, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (parametros != null)
+                        {
+                            cmd.Parameters.AddRange(parametros);
+                        }
+                        conn.Open();
+                        filasAfectadas = cmd.ExecuteNonQuery();
+                        intentoActual = maximoIntentos;
+                    }
                 }
-                conn.Open();
-                filasAfectadas = cmd.ExecuteNonQuery();
+                catch (Exception e)
+                {
+                    intentoActual++;
+                    if (intentoActual == maximoIntentos)
+                    {
+                        throw e;
+                    }
+                }
             }
             return filasAfectadas;
         }
@@ -102,16 +153,33 @@ namespace AccesoBaseDatos
         public object EjecutarScalar(string nombreSP, SqlParameter[] parametros)
         {
             object respuesta = null;
-            using (SqlConnection conn = new SqlConnection(cadenaConexion))
-            using (SqlCommand cmd = new SqlCommand(nombreSP, conn))
+            int intentoActual = 0;
+            int maximoIntentos = int.Parse(ConfigurationManager.AppSettings["maxIntentosConexion"]);
+            while (intentoActual < maximoIntentos)
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                if (parametros != null)
+                try
                 {
-                    cmd.Parameters.AddRange(parametros);
+                    using (SqlConnection conn = new SqlConnection(cadenaConexion))
+                    using (SqlCommand cmd = new SqlCommand(nombreSP, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (parametros != null)
+                        {
+                            cmd.Parameters.AddRange(parametros);
+                        }
+                        conn.Open();
+                        respuesta = cmd.ExecuteScalar();
+                        intentoActual = maximoIntentos;
+                    }
                 }
-                conn.Open();
-                respuesta = cmd.ExecuteScalar();
+                catch (Exception e)
+                {
+                    intentoActual++;
+                    if (intentoActual == maximoIntentos)
+                    {
+                        throw e;
+                    }
+                }
             }
             return respuesta;
         }
@@ -125,16 +193,33 @@ namespace AccesoBaseDatos
         public object EjecutarEscalar(string query, SqlParameter[] parametros)
         {
             object respuesta = null;
-            using (SqlConnection conn = new SqlConnection(cadenaConexion))
-            using (SqlCommand cmd = new SqlCommand(query, conn))
+            int intentoActual = 0;
+            int maximoIntentos = int.Parse(ConfigurationManager.AppSettings["maxIntentosConexion"]);
+            while (intentoActual < maximoIntentos)
             {
-                cmd.CommandType = CommandType.Text;
-                if (parametros != null)
+                try
                 {
-                    cmd.Parameters.AddRange(parametros);
+                    using (SqlConnection conn = new SqlConnection(cadenaConexion))
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        if (parametros != null)
+                        {
+                            cmd.Parameters.AddRange(parametros);
+                        }
+                        conn.Open();
+                        respuesta = cmd.ExecuteScalar();
+                        intentoActual = maximoIntentos;
+                    }
                 }
-                conn.Open();
-                respuesta = cmd.ExecuteScalar();
+                catch (Exception e)
+                {
+                    intentoActual++;
+                    if (intentoActual == maximoIntentos)
+                    {
+                        throw e;
+                    }
+                }
             }
             return respuesta;
         }

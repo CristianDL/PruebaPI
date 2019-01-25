@@ -37,8 +37,30 @@ namespace PIWebAPI
 
         public async Task<JObject> GetAsync(string uri)
         {
-            HttpResponseMessage response =  await client.GetAsync(uri).ConfigureAwait(false);
-            string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            int intentoActual = 0;
+            HttpResponseMessage response =  new HttpResponseMessage(HttpStatusCode.BadRequest);
+            string content = string.Empty;
+            int maximoIntentos = int.Parse(ConfigurationManager.AppSettings["maxIntentosConexion"]);
+            while (intentoActual < maximoIntentos && !response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    response = await client.GetAsync(uri).ConfigureAwait(false);
+                    content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        intentoActual++;
+                    }
+                }
+                catch (Exception e)
+                {
+                    intentoActual++;
+                    if (intentoActual == maximoIntentos)
+                    {
+                        throw e;
+                    }
+                }
+            }
             if (!response.IsSuccessStatusCode)
             {
                 string responseMessage = string.Format("Error: {0}", (int)response.StatusCode);
