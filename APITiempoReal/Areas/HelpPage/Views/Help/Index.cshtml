@@ -6,7 +6,7 @@
 @model Collection<ApiDescription>
 
 @{
-    ViewBag.Title = "ASP.NET Web API Help Page";
+    ViewBag.Title = "API Tiempo Real";
 
     // Group APIs by controller
     ILookup<HttpControllerDescriptor, ApiDescription> apiGroups = Model.ToLookup(api => api.ActionDescriptor.ControllerDescriptor);
@@ -23,9 +23,10 @@
 <div id="body" class="help-page">
     <section class="featured">
         <div class="content-wrapper">
-            <h2>Introduction</h2>
+            <h2>Introducción</h2>
             <p>
-                Provide a general description of your APIs here.
+                Ésta API permite la consulta de datos de potencia instantánea, potencia máxima por hora y energía por hora para
+                un conjunto de barras en un rango de fechas determinado.
             </p>
         </div>
     </section>
