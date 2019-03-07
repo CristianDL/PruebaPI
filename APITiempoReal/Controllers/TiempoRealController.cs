@@ -28,13 +28,6 @@ namespace APITiempoReal.Controllers
 
             if (activos.Count > 0)
             {
-                activos.RemoveAll(a => a.SeriesDatos.Where(s => s.NombreSerie.Equals(Variables.E.ToString())).ToList().Count() <= 0);
-
-                foreach (ActivoElectrico item in activos)
-                {
-                    item.SeriesDatos.RemoveAll(s => !s.NombreSerie.Equals(Variables.E.ToString()));
-                }
-
                 return Ok(ActivoElectrico.Desglosar(activos));
             }
             else
@@ -57,13 +50,6 @@ namespace APITiempoReal.Controllers
 
             if (activos.Count > 0)
             {
-                activos.RemoveAll(a => a.SeriesDatos.Where(s => s.NombreSerie.Equals(Variables.Pmax.ToString())).ToList().Count() <= 0);
-
-                foreach (ActivoElectrico item in activos)
-                {
-                    item.SeriesDatos.RemoveAll(s => !s.NombreSerie.Equals(Variables.Pmax.ToString()));
-                }
-
                 return Ok(ActivoElectrico.Desglosar(activos));
             }
             else

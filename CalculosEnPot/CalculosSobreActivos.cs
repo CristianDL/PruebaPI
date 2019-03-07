@@ -53,6 +53,16 @@ namespace CalculosEnPot
                 activo.SeriesDatos.Add(serie);
             }
 
+            if (activos.Count > 0)
+            {
+                activos.RemoveAll(a => a.SeriesDatos.Where(s => s.NombreSerie.Equals(variable.ToString())).ToList().Count() <= 0);
+
+                foreach (ActivoElectrico item in activos)
+                {
+                    item.SeriesDatos.RemoveAll(s => !s.NombreSerie.Equals(variable.ToString()));
+                }
+            }
+
             return activos;
         }
 
