@@ -79,9 +79,10 @@ namespace CalculosEnPot
                 activos.Add(activo);
             }
 
+            ConsultasBDMID consulta = new ConsultasBDMID();
+
             foreach (ActivoElectrico activo in activos)
             {
-                ConsultasBDMID consulta = new ConsultasBDMID();
                 activo.Tag = consulta.ObtenerTagMapeo(activo.CodigoMID);
                 if (!string.IsNullOrEmpty(activo.Tag))
                 {
