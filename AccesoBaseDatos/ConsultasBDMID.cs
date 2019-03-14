@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Configuration;
+using System.Data;
 
 namespace AccesoBaseDatos
 {
@@ -9,7 +10,7 @@ namespace AccesoBaseDatos
 
         public ConsultasBDMID()
         {
-            conexion = new AccesoBD();
+            conexion = new AccesoBD(ConfigurationManager.AppSettings["conexionMID"]);
         }
 
         public string ObtenerTagMapeo(string codigoMID)

@@ -11,9 +11,9 @@ namespace AccesoBaseDatos
     {
         private string cadenaConexion;
 
-        public AccesoBD()
+        public AccesoBD(string cadena)
         {
-            cadenaConexion = ConfigurationManager.AppSettings["conexionMID"];
+            cadenaConexion = cadena;
         }
 
         /// <summary>
