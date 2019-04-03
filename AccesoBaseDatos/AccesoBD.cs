@@ -109,8 +109,8 @@ namespace AccesoBaseDatos
         /// </summary>
         /// <param name="nombreSP">Nombre del procedimiento almacenado</param>
         /// <param name="parametros">Parámetros del procedimiento almacenado, null si no tiene</param>
-        /// <returns></returns>
-        public int EjecutarQuery(string nombreSP, SqlParameter[] parametros)
+        /// <returns>Número de filas afectadas.</returns>
+        public int EjecutarSP(string nombreSP, SqlParameter[] parametros)
         {
             int filasAfectadas = 0;
             int intentoActual = 0;
@@ -150,7 +150,7 @@ namespace AccesoBaseDatos
         /// <param name="nombreSP">Nombre del procedimiento almacenado</param>
         /// <param name="parametros">Parámetros del procedimiento almacenado, null si no tiene</param>
         /// <returns>Primera columna de la primera fila</returns>
-        public object EjecutarScalar(string nombreSP, SqlParameter[] parametros)
+        public object EjecutarSPEscalar(string nombreSP, SqlParameter[] parametros)
         {
             object respuesta = null;
             int intentoActual = 0;
@@ -190,7 +190,7 @@ namespace AccesoBaseDatos
         /// <param name="query">Consulta a ejecutar</param>
         /// <param name="parametros">Parámetros, null si no tiene</param>
         /// <returns>Primera columna de la primera fila</returns>
-        public object EjecutarEscalar(string query, SqlParameter[] parametros)
+        public object EjecutarQueryEscalar(string query, SqlParameter[] parametros)
         {
             object respuesta = null;
             int intentoActual = 0;

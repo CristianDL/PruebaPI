@@ -19,7 +19,7 @@ namespace AccesoBaseDatos
 
             listaParametros.AdicionarParametro("@codigoMID", SqlDbType.VarChar, ParameterDirection.Input, codigoMID);
 
-            return (string)conexion.EjecutarEscalar(Queries.TagMapeo, listaParametros.ListaParametros.ToArray());
+            return (string)conexion.EjecutarQueryEscalar(Queries.TagMapeo, listaParametros.ListaParametros.ToArray());
         }
     }
 }
