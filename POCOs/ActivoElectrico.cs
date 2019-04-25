@@ -63,7 +63,7 @@ namespace POCOs
                         {
                             CodigoMID = this.CodigoMID,
                             Variable = serie.NombreSerie,
-                            Fecha = fecha.Date.ToString(),
+                            Fecha = fecha.Date.ToString("dd/MM/yyyy"),
                             Hora = "" + (fecha.Hour + 1),
                             Valor = "" + serie.Datos[fecha]
                         });
@@ -74,7 +74,7 @@ namespace POCOs
                         {
                             CodigoMID = this.CodigoMID,
                             Variable = serie.NombreSerie,
-                            Fecha = fecha.Date.ToString(),
+                            Fecha = fecha.Date.ToString("dd/MM/yyyy"),
                             Hora = fecha.TimeOfDay.ToString("g"),
                             Valor = "" + serie.Datos[fecha]
                         });
