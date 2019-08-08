@@ -61,7 +61,7 @@ namespace APITiempoReal.Controllers
         /// <summary>
         /// Consulta la potencia instantánea para las barras con códigos provistos por parámetro, entre dos fechas determinadas.
         /// </summary>
-        /// <param name="parametros"></param>
+        /// <param name="parametros">POCO con los parámetros de consulta (codigos de las barras en el MID, fecha inicio y fecha fin)</param>
         /// <returns></returns>
         [HttpGet]
         [Route("potencia")]
